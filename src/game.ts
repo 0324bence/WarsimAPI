@@ -24,7 +24,6 @@ class Game {
                 if (!this.cp || !this.cp.stdout || !this.cp.pid) {
                     return;
                 }
-                console.log("page:" + this.currentPage);
 
                 let lineArray = this.currentPage.split("\n").map(line => line.trim());
                 for (let line of lineArray) {
@@ -33,7 +32,6 @@ class Game {
                         this.currentOptions.push(option[1]);
                     }
                 }
-                console.log("options:" + this.currentOptions);
                 //exec(`taskkill /pid ${child.pid} /T /F `);
             }, 1000);
         });
@@ -50,43 +48,18 @@ class Game {
         if (!this.cp || !this.cp.stdin) {
             return;
         }
+        this.currentPage = "";
+        this.currentOptions = [];
         this.cp.stdin.write(option + "\n");
     }
 
     kill() {
         if (this.cp && this.cp.pid) {
             console.log("Killing process");
-            exec(`taskkill /pid ${this.cp.pid} /T /F `);
+            kill(this.cp.pid!, "SIGINT");
+            // exec(`taskkill /pid ${this.cp.pid} /T /F `);
         }
     }
 }
 
 export default Game;
-
-// let child = exec(`cd /d "D:/Steam/steamapps/common/Warsim The Realm of Aslona" & start /wait /b ./Warsim.exe`);
-
-// let currentPage = "";
-
-// let timer: NodeJS.Timeout | null = null;
-
-// child.stdout!.on("data", data => {
-//     currentPage += data;
-//     if (timer) {
-//         clearTimeout(timer);
-//     }
-//     timer = setTimeout(() => {
-//         console.log("page:" + currentPage);
-
-//         let lineArray = currentPage.split("\n").map(line => line.trim());
-//         let options = [];
-//         for (let line of lineArray) {
-//             let option = line.match(/^(\d*)\).*/);
-//             if (option && option[1]) {
-//                 options.push(option[1]);
-//             }
-//         }
-//         console.log("options:" + options);
-//         //exec(`taskkill /pid ${child.pid} /T /F `);
-//         kill(child.pid!, "SIGINT");
-//     }, 1000);
-// });
