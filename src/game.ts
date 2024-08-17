@@ -9,7 +9,7 @@ class Game {
     currentOptions: string[] = [];
 
     constructor() {
-        this.cp = exec(`cd /d "D:/Steam/steamapps/common/Warsim The Realm of Aslona" & start /wait /b ./Warsim.exe`);
+        this.cp = exec(`cd /d "${process.env.WARSIM_PATH}" & start /wait /b ./Warsim.exe`);
 
         if (!this.cp || !this.cp.stdout || !this.cp.pid) {
             return;
