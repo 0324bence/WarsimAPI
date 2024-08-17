@@ -12,6 +12,13 @@ app.get("/", (req, res) => {
     res.send(state);
 });
 
+app.get("/input", (req, res) => {
+    if (!game) return res.send("Game not started");
+    const input = req.query.input as string;
+    game.chooseOption(input);
+    res.send("OK");
+});
+
 process.on("SIGINT", () => {
     if (game) {
         game.kill();
